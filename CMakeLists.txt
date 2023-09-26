@@ -8,7 +8,12 @@ set(CMAKE_CXX_EXTENSIONS Off)
 
 add_executable(
     ${PROJECT_NAME}
+    source/common.cpp
     source/cppfront.cpp
+    source/io.cpp
+    source/lex.cpp
+    source/parse.cpp
+    source/parse_pretty_print.cpp
 )
 
 target_compile_options(

@@ -932,9 +932,9 @@ compiler_services::compiler_services(compiler_services const& that)
         cpp2::Default.expects(n, "a meta::declaration must point to a valid declaration_node, not null");
     }
 
-    [[nodiscard]] auto declaration_base::position() const& -> source_position { return CPP2_UFCS_0(position, (*cpp2::assert_not_null(n)));  }
+    [[nodiscard]] inline auto declaration_base::position() const& -> source_position { return CPP2_UFCS_0(position, (*cpp2::assert_not_null(n)));  }
 
-    [[nodiscard]] auto declaration_base::print() const& -> std::string { return CPP2_UFCS(pretty_print_visualize, (*cpp2::assert_not_null(n)), 0);  }
+    [[nodiscard]] inline auto declaration_base::print() const& -> std::string { return CPP2_UFCS(pretty_print_visualize, (*cpp2::assert_not_null(n)), 0);  }
 
     declaration_base::~declaration_base() noexcept{}
 declaration_base::declaration_base(declaration_base const& that)
