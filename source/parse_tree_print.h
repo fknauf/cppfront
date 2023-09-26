@@ -2,13 +2,115 @@
 #define __CPP2_PARSE_TREE_PRINTER
 
 #include "lex.h"
-#include "parse.h"
+#include "parse_tree.h"
 
 #include <memory>
 #include <variant>
 #include <iostream>
 
 namespace cpp2 {
+
+//-----------------------------------------------------------------------
+//
+//  pretty_print_visualize: pretty-prints Cpp2 ASTs
+//
+//-----------------------------------------------------------------------
+//
+auto pretty_print_visualize(token const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(primary_expression_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(literal_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(prefix_expression_node const& n, int indent)
+    -> std::string;
+template<
+    String   Name,
+    typename Term
+>
+auto pretty_print_visualize(binary_expression_node<Name,Term> const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(expression_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(expression_list_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(expression_statement_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(postfix_expression_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(unqualified_id_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(qualified_id_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(type_id_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(is_as_expression_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(id_expression_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(compound_statement_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(selection_statement_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(iteration_statement_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(return_statement_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(alternative_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(inspect_expression_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(contract_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(jump_statement_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(statement_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(parameter_declaration_node const& n, int indent, bool is_template_param = false)
+    -> std::string;
+auto pretty_print_visualize(parameter_declaration_list_node const& n, int indent, bool is_template_param_list = false)
+    -> std::string;
+auto pretty_print_visualize(function_type_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(type_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(namespace_node const& n, int indent)
+    -> std::string;
+auto pretty_print_visualize(declaration_node const& n, int indent, bool include_metafunctions_list = false)
+    -> std::string;
+
+
+
+//-----------------------------------------------------------------------
+//  pre: Get an indentation prefix
+//
+inline static int         indent_spaces  = 2;
+inline static std::string indent_str     = std::string( 1024, ' ' );    // "1K should be enough for everyone"
+
+auto pre(int indent)
+    -> std::string_view;
+
+//-----------------------------------------------------------------------
+//  try_pretty_print_visualize
+//
+//  Helper to emit whatever is in a variant where each
+//  alternative is a smart pointer
+//
+template <int I>
+auto try_pretty_print_visualize(
+    auto&     v,
+    auto&&... more
+)
+    -> std::string
+{
+    if (v.index() == I) {
+        auto const& alt = std::get<I>(v);
+        assert (alt);
+        return pretty_print_visualize (*alt, CPP2_FORWARD(more)...);
+    }
+    return "";
+}
+
 //-----------------------------------------------------------------------
 //
 //  Common parts for printing visitors

@@ -13,7 +13,8 @@ add_executable(
     source/io.cpp
     source/lex.cpp
     source/parse.cpp
-    source/parse_pretty_print.cpp
+    source/parse_tree.cpp
+    source/parse_tree_print.cpp
 )
 
 target_compile_options(
